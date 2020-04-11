@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package proto.v1;
+
+import "google/api/annotations.proto";
+
+message Todo  {
+    string name  = 1;
+    string description  = 2 ;
+    Status status  =3;
+    string itemType  =4;
+}
+
+enum Status   {
+    TODO =  0;
+    INPROGRESS = 1;
+    DONE = 2;
+}
+
+
+message Reply  {
+    bool err = 1;
+    string replyMessage  = 2;
+
+}
+
+message UpdateTodoMessage  {
+    string hash  = 2;
+    Todo todo  =1;
+}
+
+message RemoveTodoMessage  {
+    string hash  = 1;
+}
+message UpdateStatusOfTodoMessage {
+    string hash  = 2;
+    Status statusOftodo  =1;
+}
+
+message FindAllMessage{
+}
+
+message FindAllReply {
+    repeated TodoReply todos =1;
+    Reply response  =3;
+}
+
+message TodoReply {
+    Todo todo = 2;
+    string ID =1 ;
+}
+
+
+service TodoService {
+
+    rpc AddTodo(Todo)returns(Reply){
+        option (google.api.http)= {
+			post :"/api/todo/v1/add"
+			body: "*"
+		};
+    }
+
+    rpc FindAll(FindAllMessage) returns (stream FindAllReply){
+        option (google.api.http)= {
+			get: "/api/todo/v1"
+
+		};
+    }
+
+    rpc RemoveTodo (RemoveTodoMessage) returns (Reply){
+        option (google.api.http) ={
+			delete : "/api/todo/v1/{hash}"
+		};
+    }
+
+
+    rpc UpdateTodo (UpdateTodoMessage) returns (Reply){
+        option (google.api.http)={
+			put: "/api/todo/v1/update/{hash}"
+			body: "todo"
+		};
+    }
+
+    rpc UpdateStatusOfTodo (UpdateStatusOfTodoMessage) returns (Reply){
+        option (google.api.http)={
+			patch: "/api/todo/v1/updateStatus/{hash}"
+			body: "statusOftodo"
+		};
+    }
+}
+
