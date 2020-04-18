@@ -1,9 +1,0 @@
-{
-  "grpc":{
-    "host": "localhost:7887",
-    "network": "tcp"
-  },
-  "http":{
-    "host": "localhost:7878"
-  }
-}

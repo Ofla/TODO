@@ -1,0 +1,13 @@
+server:
+
+  grpc:
+    type:     "grpc"
+    host:     "localhost:7887"
+    network:  "tcp"
+
+  http:
+    host:     "localhost:7878"
+
+database:
+  tablename:  "todo"
+  type:       "memdb"

@@ -1,9 +1,18 @@
+VERSION=1.0.1
+
 GOOGLE_APIS=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis
+# Go parameters
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
+GOGET=$(GOCMD) get
+GORUN=$(GOCMD) run
 
 install-tools:
-	go get  github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
-	go get  github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
-	go get  github.com/golang/protobuf/protoc-gen-go
+	$(GOGET)  github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+	$(GOGET)  github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
+	$(GOGET)  github.com/golang/protobuf/protoc-gen-go
 
 
 generate-all: install-tools
@@ -29,5 +38,8 @@ runHTTPServer:
 runGRPCClient:
 	go run ./client/grpcClient.go
 
+init:
+	$(GOCMD) mod download
+
 test:
-	go ./buslog/todo_test.go
+	$(GOTEST) -v ./...
